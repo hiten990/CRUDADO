@@ -1,0 +1,79 @@
+﻿@model User
+
+@{
+    Layout = "_Layout_Welcome";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <br />
+    <br />
+
+    <h6>Welcome: @Model.UserName</h6>
+    <br />
+    <div>
+        <table id="tblUserDetails" width="315px" border="1">
+            <thead>
+                <tr>
+                    <td colspan="2" align="center">
+                        User Details
+                    </td>
+                </tr>
+            </thead>
+            <tr>
+                <td>Username</td>
+                <td>@Model.UserName</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>@Model.Email</td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td>@Model.Password</td>
+            </tr>
+            <tr>
+                <td>Gender</td>
+                <td>@Model.Gender</td>
+            </tr>
+            <tr>
+                <td>City</td>
+                <td>@Model.City</td>
+            </tr>
+            <tr>
+                <td>Date Of Birth</td>
+                <td>@Model.DateOfBirth</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<style>
+    div {
+        width: 315px;
+        background: #ccc;
+        border: 1px solid #000;
+    }
+</style>
+
+<script>
+$(document).ready(function () {
+    $("#tblUserDetails").effect("clip", "slow", callback);
+});
+
+function callback() {
+    setTimeout(function () {
+        $("#tblUserDetails").removeAttr("style").hide().fadeIn();
+    }, 500);
+};
+</script>
