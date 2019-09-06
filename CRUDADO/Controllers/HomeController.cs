@@ -1,6 +1,7 @@
 ﻿using CRUDADO.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -36,6 +37,7 @@ namespace CRUDADO.Controllers
                     {
                         while (reader.Read())
                         {
+                            usermngr.Id = Int32.Parse(reader["Id"].ToString());
                             usermngr.UserName = reader["UserName"].ToString();
                             usermngr.Email = reader["Email"].ToString();
                             usermngr.Password = reader["Password"].ToString();
@@ -64,28 +66,58 @@ namespace CRUDADO.Controllers
             return View();
         }
 
+        public IActionResult EditRegister(User usermngr)
+        {
+            return View(usermngr);
+        }
+
         [HttpPost]
         public IActionResult Register(User usermngr)
         {
-            if (ModelState.IsValid)
+            if (usermngr.Id != 0)
             {
-                string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                if (!ModelState.IsValid)
+                    return View(usermngr);
+                else
                 {
-                    string sql = $"Insert Into UserMaster (UserName, Email, Password, Gender, City, DateOfBirth) Values ('{usermngr.UserName}', '{usermngr.Email}','{usermngr.Password}','{Request.Form["rbGender"].ToString()}','{Request.Form["ddlCity"].ToString()}','{usermngr.DateOfBirth}')";
-
-                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
+                    using (SqlConnection connection = new SqlConnection(connectionString))
                     {
-                        command.CommandType = CommandType.Text;
-                        connection.Open();
-                        command.ExecuteNonQuery();
-                        connection.Close();
+                        string sql = $"Update UserMaster Set UserName = '{usermngr.UserName}', Email = '{usermngr.Email}', Password = '{usermngr.Password}', Gender = '{usermngr.Gender}', City = '{usermngr.City}', DateOfBirth = '{usermngr.DateOfBirth}' Where Id = '{usermngr.Id}'";
+                        using (SqlCommand command = new SqlCommand(sql, connection))
+                        {
+                            command.CommandType = CommandType.Text;
+                            connection.Open();
+                            command.ExecuteNonQuery();
+                            connection.Close();
+                        }
+                        return View("Login", usermngr);
                     }
-                    return RedirectToAction("Index");
                 }
             }
             else
-                return View();
+            {
+                if (!ModelState.IsValid)
+                    return View();
+                else
+                {
+                    string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        string sql = $"Insert Into UserMaster (UserName, Email, Password, Gender, City, DateOfBirth) output INSERTED.ID Values ('{usermngr.UserName}', '{usermngr.Email}','{usermngr.Password}','{Request.Form["rbGender"].ToString()}','{Request.Form["ddlCity"].ToString()}','{usermngr.DateOfBirth}')";
+                        usermngr.Gender = Request.Form["rbGender"].ToString();
+                        usermngr.City = Request.Form["ddlCity"].ToString();
+                        using (SqlCommand command = new SqlCommand(sql, connection))
+                        {
+                            command.CommandType = CommandType.Text;
+                            connection.Open();
+                            usermngr.Id = (int)command.ExecuteScalar();
+                            connection.Close();
+                        }
+                        return View("Login", usermngr);
+                    }
+                }
+            }
         }
     }
 }

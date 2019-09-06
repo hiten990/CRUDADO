@@ -11,46 +11,42 @@
     <meta name="viewport" content="width=device-width" />
 </head>
 <body>
+    @*<form id="frmEditRegister" asp-action="EditRegister" asp-controller="Home" asp-route-returnurl="" method="post" style="width:315px;">*@
     <br />
     <br />
 
     <h6>Welcome: @Model.UserName</h6>
     <br />
     <div>
-        <table id="tblUserDetails" width="315px" border="1">
+        <table id="tblUserDetails" width="800px" border="1">
             <thead>
                 <tr>
-                    <td colspan="2" align="center">
+                    <td colspan="7" align="center">
                         User Details
                     </td>
                 </tr>
             </thead>
             <tr>
                 <td>Username</td>
-                <td>@Model.UserName</td>
-            </tr>
-            <tr>
                 <td>Email</td>
-                <td>@Model.Email</td>
-            </tr>
-            <tr>
                 <td>Password</td>
-                <td>@Model.Password</td>
-            </tr>
-            <tr>
                 <td>Gender</td>
-                <td>@Model.Gender</td>
-            </tr>
-            <tr>
                 <td>City</td>
-                <td>@Model.City</td>
+                <td>Date Of Birth</td>
+                <td>Edit UserDetails</td>
             </tr>
             <tr>
-                <td>Date Of Birth</td>
+                <td>@Model.UserName</td>
+                <td>@Model.Email</td>
+                <td>@Model.Password</td>
+                <td>@Model.Gender</td>
+                <td>@Model.City</td>
                 <td>@Model.DateOfBirth</td>
+                <td align="center"><input type="button" value="Edit" class="btn btn-default" onclick="location.href='@Url.Action("EditRegister", "Home", @Model)'" style="width:120px;height:40px"/></td>
             </tr>
         </table>
     </div>
+    @*</form>*@
 </body>
 </html>
 
@@ -60,20 +56,20 @@
 
 <style>
     div {
-        width: 315px;
+        width: 800px;
         background: #ccc;
         border: 1px solid #000;
     }
 </style>
 
 <script>
-$(document).ready(function () {
-    $("#tblUserDetails").effect("clip", "slow", callback);
-});
+    $(document).ready(function () {
+        $("#tblUserDetails").effect("clip", "slow", callback);
+    });
 
-function callback() {
-    setTimeout(function () {
-        $("#tblUserDetails").removeAttr("style").hide().fadeIn();
-    }, 500);
-};
+    function callback() {
+        setTimeout(function () {
+            $("#tblUserDetails").removeAttr("style").hide().fadeIn();
+        }, 500);
+    };
 </script>

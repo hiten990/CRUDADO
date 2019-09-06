@@ -8,45 +8,48 @@
 </style>
 
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-<form class="m-1 p-1" method="post" style="width:315px">
+<form id="frmLogin" asp-action="Register" asp-controller="Home" asp-route-returnurl="" method="post" style="width:315px;">
     <a href='@Url.Action("Index", "Home")' id="Home">Home</a>
     <br />
     <br />
+    <div class="form-group" style="display:none">
+        @Html.HiddenFor(m => m.Id, new { Value = @Model.Id })
+    </div>
     <div class="form-group">
         <label asp-for="UserName"></label>
-        <input asp-for="UserName" class="form-control" />
+        <input asp-for="UserName" class="form-control" value="@Model.UserName" />
         <span asp-validation-for="UserName" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Email"></label>
-        <input asp-for="Email" type="text" class="form-control" />
+        <input asp-for="Email" type="text" class="form-control" value="@Model.Email" />
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Password"></label>
-        <input asp-for="Password" type="password" class="form-control" />
+        <input asp-for="Password" type="password" class="form-control" value="@Model.Password" />
         <span asp-validation-for="Password" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Gender"></label><br />
-        <label asp-for="Gender">Male</label>  @Html.RadioButton("rbGender", "Male")
-        <label asp-for="Gender">Female</label>@Html.RadioButton("rbGender", "Female")
+        <label asp-for="Gender">Male</label> @Html.RadioButtonFor(m => @Model.Gender, "Male", @Model.Gender == "Male" ? new { @checked = "checked" } : null)
+        <label asp-for="Gender">Female</label> @Html.RadioButtonFor(m => @Model.Gender, "Female", @Model.Gender == "Female" ? new { @checked = "checked" } : null)
     </div>
     <div class="form-group">
         <label asp-for="City"></label>
-        @Html.DropDownList("ddlCity", new List<SelectListItem>
+        @Html.DropDownListFor(model => model.City, new List<SelectListItem>
         {
             new SelectListItem{ Text="New York", Value = "New York" },
             new SelectListItem{ Text="Washington", Value = "Washington" },
             new SelectListItem{ Text="Los Angeles", Value = "Los Angeles" },
             new SelectListItem{ Text="Denmark", Value = "Denmark" },
-         }, new { @class = "form-control" })
+         }, @Model.City, new { @class = "form-control" })
     </div>
     <div class="form-group">
         <label asp-for="DateOfBirth" class="control-label"></label>
         @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control" } })
     </div>
-    <button type="submit" class="btn btn-primary">Register</button>
+    <button type="submit" class="btn btn-primary">Update</button>
 </form>
 
 <script src="/lib/jquery/dist/jquery.min.js"></script>
@@ -60,8 +63,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 
 <style>
-    body{
-        position:absolute;
+    body {
+        position: absolute;
     }
 </style>
 
