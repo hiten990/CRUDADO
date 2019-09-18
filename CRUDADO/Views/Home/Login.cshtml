@@ -11,42 +11,42 @@
     <meta name="viewport" content="width=device-width" />
 </head>
 <body>
-    @*<form id="frmEditRegister" asp-action="EditRegister" asp-controller="Home" asp-route-returnurl="" method="post" style="width:315px;">*@
-    <br />
-    <br />
+    <div style="margin-left: 24%;margin-top: 11%;">
+        <br />
+        <br />
 
-    <h6>Welcome: @Model.UserName</h6>
-    <br />
-    <div>
-        <table id="tblUserDetails" width="800px" border="1">
-            <thead>
+        <h6>Welcome: @Model.UserName</h6>
+        <br />
+        <div>
+            <table id="tblUserDetails" width="800px" border="1">
+                <thead>
+                    <tr>
+                        <td colspan="7" align="center">
+                            User Details
+                        </td>
+                    </tr>
+                </thead>
                 <tr>
-                    <td colspan="7" align="center">
-                        User Details
-                    </td>
+                    <td>Username</td>
+                    <td>Email</td>
+                    <td>Password</td>
+                    <td>Gender</td>
+                    <td>City</td>
+                    <td>Date Of Birth</td>
+                    <td>Edit UserDetails</td>
                 </tr>
-            </thead>
-            <tr>
-                <td>Username</td>
-                <td>Email</td>
-                <td>Password</td>
-                <td>Gender</td>
-                <td>City</td>
-                <td>Date Of Birth</td>
-                <td>Edit UserDetails</td>
-            </tr>
-            <tr>
-                <td>@Model.UserName</td>
-                <td>@Model.Email</td>
-                <td>@Model.Password</td>
-                <td>@Model.Gender</td>
-                <td>@Model.City</td>
-                <td>@Model.DateOfBirth</td>
-                <td align="center"><input type="button" value="Edit" class="btn btn-default" onclick="location.href='@Url.Action("EditRegister", "Home", @Model)'" style="width:120px;height:40px"/></td>
-            </tr>
-        </table>
+                <tr>
+                    <td>@Model.UserName</td>
+                    <td>@Model.Email</td>
+                    <td>@Model.Password</td>
+                    <td>@Model.Gender</td>
+                    <td>@Model.City</td>
+                    <td>@Model.DateOfBirth</td>
+                    <td align="center"><input type="button" value="Edit" class="btn btn-default" onclick="location.href='@Url.Action("EditRegister", "Home", @Model)'" style="width:120px;height:40px" /></td>
+                </tr>
+            </table>
+        </div>
     </div>
-    @*</form>*@
 </body>
 </html>
 
@@ -57,7 +57,7 @@
 <style>
     div {
         width: 800px;
-        background: #ccc;
+        background: none;
         border: 1px solid #000;
     }
 </style>

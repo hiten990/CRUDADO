@@ -10,12 +10,11 @@ namespace CRUDADO.Models
         public string UserName { get; set; }
 
         [Required]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required]
         public string Password { get; set; }
-
-        public string Msg { get; set; }
 
         public string Gender { get; set; }
 

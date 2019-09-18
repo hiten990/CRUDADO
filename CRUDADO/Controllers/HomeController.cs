@@ -1,4 +1,5 @@
 ﻿using CRUDADO.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -16,8 +17,56 @@ namespace CRUDADO.Controllers
             Configuration = configuration;
         }
 
-        public IActionResult Index(User usermngr)
+        [HttpGet]
+        public IActionResult Index()
         {
+            User usermngr = new User();
+            return View(usermngr);
+        }
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            User usermngr = new User();
+            if (Convert.ToString(HttpContext.Session.GetString("username")) == null)
+            {
+                TempData["ErrorMessage"] = "Session Timeout. Please ReLogin Again !";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand($"select * from UserMaster Where UserName = '{Convert.ToString(HttpContext.Session.GetString("username"))}'", connection))
+                    {
+                        command.CommandTimeout = 0;
+                        command.CommandType = CommandType.Text;
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                usermngr.Id = Int32.Parse(reader["Id"].ToString());
+                                usermngr.UserName = reader["UserName"].ToString();
+                                usermngr.Email = reader["Email"].ToString();
+                                usermngr.Password = reader["Password"].ToString();
+                                usermngr.Gender = reader["Gender"].ToString();
+                                usermngr.City = reader["City"].ToString();
+                                usermngr.DateOfBirth = reader["DateOfBirth"].ToString();
+                            }
+                        }
+                    }
+                    connection.Close();
+
+                    if (usermngr.Email != null && usermngr.Password != null && usermngr.UserName != null)
+                    {
+                        HttpContext.Session.SetString("username", usermngr.UserName);
+                        return View(usermngr);
+                    }
+                }
+            }
             return View(usermngr);
         }
 
@@ -51,16 +100,16 @@ namespace CRUDADO.Controllers
 
                 if (usermngr.Email != null && usermngr.Password != null && usermngr.UserName != null)
                 {
+                    HttpContext.Session.SetString("username", usermngr.UserName);
                     return View(usermngr);
                 }
                 else
                 {
-                    usermngr.Msg = "Invalid Email Or Password !";
+                    TempData["ErrorMessage"] = "Invalid Email Or Password !";
                     return RedirectToAction("Index", usermngr);
                 }
             }
         }
-
         public IActionResult Register()
         {
             return View();
@@ -68,6 +117,11 @@ namespace CRUDADO.Controllers
 
         public IActionResult EditRegister(User usermngr)
         {
+            if (Convert.ToString(HttpContext.Session.GetString("username")) == null)
+            {
+                TempData["ErrorMessage"] = "Session Timeout. Please ReLogin Again !";
+                return RedirectToAction("Index", usermngr);
+            }
             return View(usermngr);
         }
 
@@ -76,29 +130,41 @@ namespace CRUDADO.Controllers
         {
             if (usermngr.Id != 0)
             {
-                if (!ModelState.IsValid)
-                    return View(usermngr);
+                if (Convert.ToString(HttpContext.Session.GetString("username")) == null)
+                {
+                    TempData["ErrorMessage"] = "Session Timeout. Please ReLogin Again !";
+                    return RedirectToAction("Index", usermngr);
+                }
                 else
                 {
-                    string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
-                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    if (!ModelState.IsValid)
                     {
-                        string sql = $"Update UserMaster Set UserName = '{usermngr.UserName}', Email = '{usermngr.Email}', Password = '{usermngr.Password}', Gender = '{usermngr.Gender}', City = '{usermngr.City}', DateOfBirth = '{usermngr.DateOfBirth}' Where Id = '{usermngr.Id}'";
-                        using (SqlCommand command = new SqlCommand(sql, connection))
+                        return View(usermngr);
+                    }
+                    else
+                    {
+                        string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
+                        using (SqlConnection connection = new SqlConnection(connectionString))
                         {
-                            command.CommandType = CommandType.Text;
-                            connection.Open();
-                            command.ExecuteNonQuery();
-                            connection.Close();
+                            string sql = $"Update UserMaster Set UserName = '{usermngr.UserName}', Email = '{usermngr.Email}', Password = '{usermngr.Password}', Gender = '{usermngr.Gender}', City = '{usermngr.City}', DateOfBirth = '{usermngr.DateOfBirth}' Where Id = '{usermngr.Id}'";
+                            using (SqlCommand command = new SqlCommand(sql, connection))
+                            {
+                                command.CommandType = CommandType.Text;
+                                connection.Open();
+                                command.ExecuteNonQuery();
+                                connection.Close();
+                            }
+                            return View("Login", usermngr);
                         }
-                        return View("Login", usermngr);
                     }
                 }
             }
             else
             {
                 if (!ModelState.IsValid)
-                    return View();
+                {
+                    return View(usermngr);
+                }
                 else
                 {
                     string connectionString = Configuration["ConnectionStrings:DefaultConnection"];

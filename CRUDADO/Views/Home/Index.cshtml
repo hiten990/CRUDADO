@@ -1,32 +1,32 @@
 ﻿@model User
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-4" style="margin-left: 39%;margin-top: 10%;">
         <section>
-                <form id="frmLogin" asp-action="Login" asp-controller="Home" asp-route-returnurl="" method="post" style="width:315px;">
-                    @if (@Model.Msg != null)
-                    {
-                        @Model.Msg
-                    }
-                    <br />
-                    <br />
-                    <div class="form-group">
-                        <label asp-for="Email" style="width:150px; display:inline-block;"></label>
-                        <input asp-for="Email" class="form-control" />
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Password" style="width:150px; display:inline-block;"></label>
-                        <input asp-for="Password" class="form-control" type="password" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
-                    <div class="form-group" style="float:left;">
-                        <button type="submit" class="btn btn-default">Log in</button>
-                    </div>
-                    <div class="form-group" style="float:right;">
-                        <input type="button" value="Register" class="btn btn-default" onclick="location.href='@Url.Action("Register", "Home")'" />
-                    </div>
-                </form>
+            <form id="frmLogin" asp-action="Login" asp-controller="Home" asp-route-returnurl="" method="post" style="width:315px;">
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    @TempData["ErrorMessage"]
+                }
+                <br />
+                <br />
+                <div class="form-group">
+                    <label asp-for="Email" style="width:150px; display:inline-block;"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password" style="width:150px; display:inline-block;"></label>
+                    <input asp-for="Password" class="form-control" type="password" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group" style="float:left;">
+                    <button type="submit" class="btn btn-default">Log in</button>
+                </div>
+                <div class="form-group" style="float:right;">
+                    <input type="button" value="Register" class="btn btn-default" onclick="location.href='@Url.Action("Register", "Home")'" />
+                </div>
+            </form>
         </section>
     </div>
 </div>
