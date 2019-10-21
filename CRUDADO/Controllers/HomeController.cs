@@ -170,9 +170,7 @@ namespace CRUDADO.Controllers
                     string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
                     using (SqlConnection connection = new SqlConnection(connectionString))
                     {
-                        string sql = $"Insert Into UserMaster (UserName, Email, Password, Gender, City, DateOfBirth) output INSERTED.ID Values ('{usermngr.UserName}', '{usermngr.Email}','{usermngr.Password}','{Request.Form["rbGender"].ToString()}','{Request.Form["ddlCity"].ToString()}','{usermngr.DateOfBirth}')";
-                        usermngr.Gender = Request.Form["rbGender"].ToString();
-                        usermngr.City = Request.Form["ddlCity"].ToString();
+                        string sql = $"Insert Into UserMaster (UserName, Email, Password, Gender, City, DateOfBirth) output INSERTED.ID Values ('{usermngr.UserName}', '{usermngr.Email}','{usermngr.Password}','{usermngr.Gender}','{usermngr.City}','{usermngr.DateOfBirth}')";
                         using (SqlCommand command = new SqlCommand(sql, connection))
                         {
                             command.CommandType = CommandType.Text;

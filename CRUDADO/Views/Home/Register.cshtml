@@ -8,8 +8,8 @@
 </style>
 
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-<form class="m-1 p-1" method="post" style="width:500%">
-    <div style="margin-left: 60%;margin-top: 12%;">
+<form class="m-1 p-1" method="post" style="width:100%">
+    <div style="margin-top: 6%;margin-left: 40%;margin-right: 40%;width: auto;">
         <br />
         <br />
         <div class="form-group">
@@ -29,48 +29,44 @@
         </div>
         <div class="form-group">
             <label asp-for="Gender"></label><br />
-            <label asp-for="Gender">Male</label>  @Html.RadioButton("rbGender", "Male")
-            <label asp-for="Gender">Female</label>@Html.RadioButton("rbGender", "Female")
+            <label asp-for="Gender">Male</label>  @Html.RadioButton("Gender", "Male")
+            <label asp-for="Gender">Female</label>@Html.RadioButton("Gender", "Female")
+            <span asp-validation-for="Gender" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="City"></label>
-            @Html.DropDownList("ddlCity", new List<SelectListItem>
+            @Html.DropDownList("City", new List<SelectListItem>
             {
+           new SelectListItem{ Text="Select City", Value = "" },
                 new SelectListItem{ Text="New York", Value = "New York" },
                 new SelectListItem{ Text="Washington", Value = "Washington" },
                 new SelectListItem{ Text="Los Angeles", Value = "Los Angeles" },
                 new SelectListItem{ Text="Denmark", Value = "Denmark" },
              }, new { @class = "form-control" })
+            <span asp-validation-for="City" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="DateOfBirth" class="control-label"></label>
             @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control" } })
+            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
         </div>
         <button type="submit" class="btn btn-primary">Register</button>
         <button class="btn btn-primary" type="button" onclick="location.href='@Url.Action("Index", "Home")'">Cancle</button>
     </div>
 </form>
 
-<script src="/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css.map" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
-
-<style>
-    body {
-        position: absolute;
-    }
-</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#DateOfBirth').datetimepicker({
-            format: 'YYYY/MM/DD'
-        });
+        $('#DateOfBirth').datepicker();
     });
 </script>
